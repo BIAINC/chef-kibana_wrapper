@@ -1,10 +1,7 @@
 ---
 driver:
   name: vagrant
-driver_config:
-  require_chef_omnibus: true
-  network:
-    - ["forwarded_port", {guest: 8080, host: 8087}]
+  provider: vmware_fusion
 
 provisioner:
   name: chef_solo
@@ -15,15 +12,25 @@ platforms:
 suites:
   - name: default
     run_list:
-      - 'recipe[kibana_wrapper::default]'
-      - 'recipe[kibana]'
-      - 'recipe[nginx]'
-      - 'recipe[kibana::nginx]'
-      - 'recipe[java]'
-      - 'recipe[elasticsearch]'
-#      - recipe[]
+      - kibana_wrapper::default
     attributes:
-      kibana:
-        version: '4'
-        nginx:
-          listen_http: 8080
+      nginx:
+        default_site_enabled: false
+        install_method:       source
+        source:
+          checksum: df73c1b468cebaf3530a5de910bed45ff2cfccf2cf4b9215d0aa0f4e39cf4460
+          modules:
+            - nginx::http_ssl_module
+            - nginx::http_realip_module
+            - nginx::http_gzip_static_module
+          url:      http://nginx.org/download/nginx-1.7.10.tar.gz
+          version:  1.7.10
+      java:
+        jdk:
+          '8':
+            x86_64:
+              checksum: e145c03a7edc845215092786bcfba77e
+              url:      http://download.oracle.com/otn-pub/java/jdk/8u31-b13/jdk-8u31-linux-x64.tar.gz
+        jdk_version: "8"
+        oracle:
+          accept_oracle_download_terms: true

@@ -1,0 +1,8 @@
+[Unit]
+Description=<%= @service_name %>
+After=network.target
+
+[Service]
+ExecStart=<%= @bindir %>/kibana  <%= @args %>
+User=<%= @user %>
+Restart=always
