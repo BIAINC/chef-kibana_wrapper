@@ -1,0 +1,29 @@
+---
+driver:
+  name: vagrant
+driver_config:
+  require_chef_omnibus: true
+  network:
+    - ["forwarded_port", {guest: 8080, host: 8087}]
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos-7.0
+
+suites:
+  - name: default
+    run_list:
+      - 'recipe[kibana_wrapper::default]'
+      - 'recipe[kibana]'
+      - 'recipe[nginx]'
+      - 'recipe[kibana::nginx]'
+      - 'recipe[java]'
+      - 'recipe[elasticsearch]'
+#      - recipe[]
+    attributes:
+      kibana:
+        version: '4'
+        nginx:
+          listen_http: 8080
