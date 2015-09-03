@@ -26,7 +26,7 @@ end
 
 kibana_web kib.name do
   type 'nginx'
-  listen_port kip.nginx_listen_port
+  listen_port kib.nginx_listen_port
   server_name node.name
   template 'kibana-nginx_file.conf.erb'
 end
