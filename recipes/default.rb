@@ -14,6 +14,7 @@ kibana_user kib.username do
   name kib.username
   group kib.groupname
   home kib.home_dir
+  action :create
 end
 
 kibana_install kib.name do
@@ -22,6 +23,7 @@ kibana_install kib.name do
   group kib.groupname
   install_dir kib.install_dir
   install_type 'file'
+  action :create
 end
 
 kibana_web kib.name do
@@ -29,6 +31,7 @@ kibana_web kib.name do
   listen_port kib.nginx_listen_port
   server_name node.name
   template 'kibana-nginx_file.conf.erb'
+  action :create
 end
 
 template "/etc/systemd/system/#{kib.name}.service" do
