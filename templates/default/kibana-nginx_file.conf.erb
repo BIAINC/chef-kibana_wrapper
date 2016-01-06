@@ -1,0 +1,18 @@
+server {
+  listen                <%= @listen_address %>:<%= @listen_port %>;
+  server_name           <%= @server_name %> <%= @server_aliases.join(" ") %>;
+  access_log            <%= node['nginx']['log_dir'] %>/<%= @server_name %>.access.log;
+  
+  location / {
+    proxy_pass http://localhost:<%= @kibana_port %>;
+    proxy_read_timeout 90;
+  }
+  
+  location /es/ {
+    limit_except GET {
+      deny all;
+    }
+    proxy_pass http://127.0.0.1:9200/;
+    proxy_read_timeout 90;
+  }
+}
