@@ -30,6 +30,7 @@ kibana_web kib.name do
   type 'nginx'
   listen_port kib.nginx_listen_port
   server_name node.name
+  template_cookbook 'kibana_wrapper'
   template 'kibana-nginx_file.conf.erb'
   action :create
 end
